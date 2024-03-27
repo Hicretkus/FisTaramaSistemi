@@ -4,31 +4,35 @@ namespace FisTaramaSistemi
 {
 	class Program
 	{
-		static void Main(string[] args)
+		static async Task Main(string[] args)
 		{
-
-			string jsonFilePath = @"C:\Users\acer\Downloads\response.json";
-
-			string jsonText = File.ReadAllText(jsonFilePath);
-
-			JArray response = JArray.Parse(jsonText);
-
-			if (response != null && response.Count > 0)
+			try
 			{
-				var firstItem = response[0];
+				string jsonFilePath = @"C:\Users\acer\Downloads\response.json";
 
-				var firstVertex = firstItem["boundingPoly"]["vertices"][0];
+				
+				string jsonText = await File.ReadAllTextAsync(jsonFilePath);
 
-				int x = (int)firstVertex["x"];
+				JArray response = JArray.Parse(jsonText);
 
-				int y = (int)firstVertex["y"];
+				if (response?.Count > 0) // Null kontrolü ile birleştirildi
+				{
+					var firstItem = response[0];
 
+					var firstVertex = firstItem["boundingPoly"]?["vertices"]?[0];
 
-				string description = (string)firstItem["description"];
+					int x = firstVertex?["x"]?.ToObject<int>() ?? 0; 
+					int y = firstVertex?["y"]?.ToObject<int>() ?? 0; 
 
-				string formattedLine = $"{description}";
+					string description = (string)firstItem["description"];
 
-				Console.WriteLine(formattedLine);
+					
+					Console.WriteLine($"{description}");
+				}
+			}
+			catch (Exception ex)
+			{
+				Console.WriteLine($"Bir hata oluştu: {ex.Message}");
 			}
 
 			Console.ReadKey();
