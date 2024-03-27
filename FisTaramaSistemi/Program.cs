@@ -15,7 +15,7 @@ namespace FisTaramaSistemi
 
 				JArray response = JArray.Parse(jsonText);
 
-				if (response?.Count > 0) // Null kontrolü ile birleştirildi
+				if (response?.Count > 0) 
 				{
 					var firstItem = response[0];
 
